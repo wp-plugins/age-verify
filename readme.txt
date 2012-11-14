@@ -1,5 +1,5 @@
 === Age Verify ===
-Contributors: chasewiseman
+Contributors: ChaseWiseman
 Tags: age, restrict, verify
 Requires at least: 3.2
 Tested up to: 3.5
