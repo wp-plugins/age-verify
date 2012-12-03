@@ -5,12 +5,12 @@
  * Description: A simple way to ask visitors for their age before viewing your site.
  * Author:      Chase Wiseman
  * Author URI:  http://chasewiseman.com
- * Version:     0.1
+ * Version:     0.1.5
  * Text Domain: age_verify
  * Domain Path: /av-languages/
  *
  * @package   AgeVerify
- * @version   0.1
+ * @version   0.1.5
  * @author    Chase Wiseman <contact@chasewiseman.com>
  * @copyright Copyright (c) 2012, Chase Wiseman
  * @link      http://chasewiseman.com/plugins/age-verify/
@@ -201,6 +201,8 @@ class Age_Verify {
 					
 				<?php do_action( 'av_after_form' ); ?>
 				
+				<?php if ( floatval( phpversion() ) ); ?>
+				
 			</div>
 			
 		</div>
@@ -238,12 +240,9 @@ class Age_Verify {
 				
 				if ( checkdate( (int) $_POST['av_verify_m'], (int) $_POST['av_verify_d'], (int) $_POST['av_verify_y'] ) ) :
 					
-					$birthday = new DateTime( $_POST['av_verify_y'] . '-' . $_POST['av_verify_m'] . '-' . $_POST['av_verify_d'] );
-					$current  = new DateTime( current_time( 'mysql' ) );
-					$age      = $birthday->diff( $current );
-					$age      = $age->format( '%y' );
+					$age = av_get_visitor_age( $_POST['av_verify_y'], $_POST['av_verify_m'], $_POST['av_verify_d'] );
 					
-					if ( $age >= av_get_minimum_age() )
+				    if ( $age >= av_get_minimum_age() )
 						$is_verified = true;
 						
 				endif;

@@ -32,6 +32,47 @@ function av_get_minimum_age() {
 }
 
 /**
+ * Returns the visitor's age. Adds compatibility for PHP 5.2
+ *
+ * @since 0.1.5
+ * @return int
+ */
+function av_get_visitor_age( $year, $month, $day ) {
+	global $age_verify;
+	
+	$age = 0;
+	
+	$birthday = new DateTime( $year . '-' . $month . '-' . $day );
+	
+	$phpversion = phpversion();
+	
+	if ( $phpversion >= '5.3' ) :
+		
+		$current  = new DateTime( current_time( 'mysql' ) );
+		$age      = $birthday->diff( $current );
+		$age      = $age->format( '%y' );
+		
+	else :
+		
+		list( $year, $month, $day ) = explode( '-', $birthday->format( 'Y-m-d' ) );
+		
+	    $year_diff  = date_i18n( 'Y' ) - $year;
+	    $month_diff = date_i18n( 'm' ) - $month;
+	    $day_diff   = date_i18n( 'd' ) - $day;
+	    
+	    if ( $month_diff < 0 )
+	    	$year_diff--;
+	    elseif ( ( $month_diff == 0 ) && ( $day_diff < 0 ) )
+	    	$year_diff--;
+	    
+	    $age = $year_diff;
+	    
+    endif;
+	
+	return (int) $age;
+}
+
+/**
  * Returns cookie duration. This lets us know how long to keep a
  * visitor's verified cookie. You can filter this if you like.
  *

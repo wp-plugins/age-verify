@@ -3,7 +3,7 @@ Contributors: ChaseWiseman
 Tags: age, restrict, verify
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 0.1
+Stable tag: 0.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,9 @@ Whatever your reasons, you may need your site's visitors to confirm their age be
 2. This is what your visitors see, using the default styling.
 
 == Changelog ==
+
+= 0.1.5 =
+* Fixed support for PHP 5.2 and greater
 
 = 0.1 =
 * Just getting started...
