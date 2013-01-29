@@ -2,16 +2,16 @@
 Contributors: ChaseWiseman
 Tags: age, restrict, verify
 Requires at least: 3.2
-Tested up to: 3.5
-Stable tag: 0.1.5
+Tested up to: 3.5.1
+Stable tag: 0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A simple way to ask visitors for their age before viewing your site.
+A simple way to ask visitors for their age before viewing your content.
 
 == Description ==
 
-Whatever your reasons, you may need your site's visitors to confirm their age before viewing the content of your site. Age Verify does just that. It's a simple plugin that lets you specify a minimum age and add an age-gate between a potential visitor and your site, just to be safe. Enjoy!
+Whatever your reasons, you may need your site's visitors to confirm their age before viewing the content of your site. Age Verify does just that. It's a simple plugin that lets you specify a minimum age and add an age-gate between a potential visitor and your content, just to be safe. Enjoy!
 
 == Installation ==
 
@@ -25,6 +25,11 @@ Whatever your reasons, you may need your site's visitors to confirm their age be
 2. This is what your visitors see, using the default styling.
 
 == Changelog ==
+
+= 0.2 =
+* Added ability to age-restrict only specific content
+* Security enhancements (nonces!)
+* Squashed some PHP warnings
 
 = 0.1.5 =
 * Fixed support for PHP 5.2 and greater

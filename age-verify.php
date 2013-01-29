@@ -5,12 +5,12 @@
  * Description: A simple way to ask visitors for their age before viewing your site.
  * Author:      Chase Wiseman
  * Author URI:  http://chasewiseman.com
- * Version:     0.1.5
+ * Version:     0.2
  * Text Domain: age_verify
  * Domain Path: /av-languages/
  *
  * @package   AgeVerify
- * @version   0.1.5
+ * @version   0.2
  * @author    Chase Wiseman <contact@chasewiseman.com>
  * @copyright Copyright (c) 2012, Chase Wiseman
  * @link      http://chasewiseman.com/plugins/age-verify/
@@ -117,6 +117,9 @@ class Age_Verify {
 		// Maybe display the overlay
 		add_action( 'wp_footer', array( $this, 'verify_overlay' ) );
 		
+		// Maybe hide the content of a restricted content type
+		add_action( 'the_content', array( $this, 'restrict_content' ) );
+		
 		// Verify the visitor's input
 		add_action( 'template_redirect', array( $this, 'verify' ) );
 		
@@ -201,12 +204,34 @@ class Age_Verify {
 					
 				<?php do_action( 'av_after_form' ); ?>
 				
-				<?php if ( floatval( phpversion() ) ); ?>
-				
 			</div>
 			
 		</div>
 	<?php }
+	
+	/**
+	 * Hide the content if it is age restricted
+	 *
+	 * @since 0.2
+	 * @access public
+	 */
+	 public function restrict_content( $content ) {
+		 global $post;
+		 
+		 if ( ! av_only_content_restricted() )
+		 	return $content;
+		 	
+		 if ( is_singular() )
+		 	return $content;
+		 	
+		 if ( ! av_content_is_restricted() )
+		 	return $content;
+		 	
+		 return sprintf( apply_filters( 'av_restricted_content_message', __( 'You must be %1s years old to view this content.', 'age_verify' ) . ' <a href="%2s">' . __( 'Please verify your age', 'age_verify' ) . '</a>.' ),
+		 	av_get_minimum_age(),
+		 	get_permalink( $post->ID )
+		 );
+	 }
 	
 	/**
 	 * Verify the visitor if the form was submitted.
@@ -217,12 +242,14 @@ class Age_Verify {
 	 */
 	public function verify() {
 		
-		if ( ! isset( $_POST['av_verify'] ) )
+		if ( empty( $_POST ) || ! wp_verify_nonce( $_POST['av-nonce'], 'verify-age' ) )
 			return;
 		
-		$redirect_url = wp_get_referer();
+		$redirect_url = remove_query_arg( array( 'age-verified', 'verify-error' ), wp_get_referer() );
 		
 		$is_verified  = false;
+		
+		$error = 1; // Catch-all in case something goes wrong
 		
 		$input_type   = av_get_input_type();
 		
@@ -233,6 +260,8 @@ class Age_Verify {
 				
 				if ( (int) $_POST['av_verify_confirm'] == 1 )
 					$is_verified = true;
+				else
+					$error = 2; // Didn't check the box
 				
 				break;
 			
@@ -244,7 +273,13 @@ class Age_Verify {
 					
 				    if ( $age >= av_get_minimum_age() )
 						$is_verified = true;
+					else
+						$error = 3; // Not old enough
 						
+				else :
+					
+					$error = 4; // Invalid date
+					
 				endif;
 				
 				break;
@@ -257,20 +292,20 @@ class Age_Verify {
 			do_action( 'av_was_verified' );
 			
 			if ( isset( $_POST['av_verify_remember'] ) )
-				$cookie_duration = av_get_cookie_duration() * 60;
+				$cookie_duration = time() +  ( av_get_cookie_duration() * 60 );
 			else
-				$cookie_duration = 7200;
+				$cookie_duration = 0;
 			
-			setcookie( 'av_old_enough', 1, time() + $cookie_duration, COOKIEPATH, COOKIE_DOMAIN, false );
+			setcookie( 'age-verified', 1, $cookie_duration, COOKIEPATH, COOKIE_DOMAIN, false );
 			
-			wp_redirect( add_query_arg( 'verified', 'yes', $redirect_url ) );
+			wp_redirect( $redirect_url . '?age-verified=' . wp_create_nonce( 'age-verified' ) );
 			exit;
 			
 		else :
 			
 			do_action( 'av_was_not_verified' );
 			
-			wp_redirect( add_query_arg( 'verified', 'no', $redirect_url ) );
+			wp_redirect( add_query_arg( 'verify-error', $error, $redirect_url ) );
 			exit;
 			
 		endif;

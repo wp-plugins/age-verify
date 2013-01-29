@@ -35,22 +35,43 @@ function av_settings_page() { ?>
 /**********************************************************/
 
 /**
- * Print the general settings section heading.
+ * Prints the general settings section heading.
  *
  * @since 0.1
- * @access public
  */
 function av_settings_callback_section_general() {
 	
 	// Something should go here
 }
 
-function av_settings_callback_minimum_age_field() { ?>
+/**
+ * Prints the "require for" settings field.
+ *
+ * @since 0.2
+ */
+function av_settings_callback_require_for_field() { ?>
 	
-	<input name="_av_minimum_age" type="number" id="_av_minimum_age" step="1" min="10" class="small-text" value="<?php echo get_option( '_av_minimum_age', '21' ); ?>" /> <?php _e( 'years old or older to view this site', 'age_verify' ); ?>
+	<fieldset>
+		<legend class="screen-reader-text">
+			<span><?php _e( 'Require verification for', 'age_verify' ); ?></span>
+		</legend>
+		<label>
+			<input type="radio" name="_av_require_for" value="site" <?php checked( 'site', get_option( '_av_require_for', 'site' ) ); ?>/>
+			 <?php _e( 'Entire site', 'age_verify' ); ?><br />
+		</label>
+		<label>
+			<input type="radio" name="_av_require_for" value="content" <?php checked( 'content', get_option( '_av_require_for', 'site' ) ); ?>/>
+			 <?php _e( 'Specific content', 'age_verify' ); ?>
+		</label>
+	</fieldset>
 	
 <?php }
 
+/**
+ * Prints the "who to verify" settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_always_verify_field() { ?>
 	
 	<fieldset>
@@ -69,12 +90,33 @@ function av_settings_callback_always_verify_field() { ?>
 	
 <?php }
 
+/**
+ * Prints the minimum age settings field.
+ *
+ * @since 0.1
+ */
+function av_settings_callback_minimum_age_field() { ?>
+	
+	<input name="_av_minimum_age" type="number" id="_av_minimum_age" step="1" min="10" class="small-text" value="<?php echo get_option( '_av_minimum_age', '21' ); ?>" /> <?php _e( 'years old or older to view this site', 'age_verify' ); ?>
+	
+<?php }
+
+/**
+ * Prints the cookie duration settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_cookie_duration_field() { ?>
 	
 	<input name="_av_cookie_duration" type="number" id="_av_cookie_duration" step="15" min="15" class="small-text" value="<?php echo get_option( '_av_cookie_duration', '720' ); ?>" /> <?php _e( 'minutes', 'age_verify' ); ?>
 	
 <?php }
 
+/**
+ * Prints the membership settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_membership_field() { ?>
 	
 	<fieldset>
@@ -95,28 +137,42 @@ function av_settings_callback_membership_field() { ?>
 /**********************************************************/
 
 /**
- * Print the display settings section heading.
+ * Prints the display settings section heading.
  *
  * @since 0.1
- * @echo string
  */
 function av_settings_callback_section_display() {
 	
 	echo '<p>' . __( 'These settings change the look of your overlay. You can use <code>%s</code> to display the minimum age number from the setting above.', 'age_verify' ) . '</p>';
 }
 
+/**
+ * Prints the modal heading settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_heading_field() { ?>
 	
 	<input name="_av_heading" type="text" id="_av_heading" value="<?php echo get_option( '_av_heading', __( 'You must be %s years old to visit this site.', 'age_verify' ) )?>" class="regular-text" />
 	
 <?php }
 
+/**
+ * Prints the modal description settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_description_field() { ?>
 	
 	<input name="_av_description" type="text" id="_av_description" value="<?php echo get_option( '_av_description', __( 'Please verify your age', 'age_verify' ) )?>" class="regular-text" />
 	
 <?php }
 
+/**
+ * Prints the input type settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_input_type_field() { ?>
 	
 	<select name="_av_input_type" id="_av_input_type">
@@ -127,6 +183,11 @@ function av_settings_callback_input_type_field() { ?>
 	
 <?php }
 
+/**
+ * Prints the styling settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_styling_field() { ?>
 	
 	<fieldset>
@@ -141,6 +202,11 @@ function av_settings_callback_styling_field() { ?>
 	
 <?php }
 
+/**
+ * Prints the overlay color settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_overlay_color_field() { ?>
 	
 	<fieldset>
@@ -157,6 +223,11 @@ function av_settings_callback_overlay_color_field() { ?>
 	
 <?php }
 
+/**
+ * Prints the background color settings field.
+ *
+ * @since 0.1
+ */
 function av_settings_callback_bgcolor_field() { ?>
 	
 	<fieldset>
