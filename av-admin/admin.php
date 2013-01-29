@@ -20,13 +20,22 @@ add_action( 'init', 'av_admin_setup' );
  */
 function av_admin_setup() {
 	
-	add_action( 'admin_init',            'av_admin_register_settings' );
+	add_action( 'admin_init',                  'av_admin_register_settings' );
 	
-	add_action( 'admin_menu',            'av_admin_menu' );
+	add_action( 'admin_menu',                  'av_admin_menu' );
 	
-	add_filter( 'plugin_action_links',   'av_admin_add_settings_link', 10, 2 );
+	add_filter( 'plugin_action_links',         'av_admin_add_settings_link', 10, 2 );
 
-	add_action( 'admin_enqueue_scripts', 'av_admin_enqueue_scripts' );
+	add_action( 'admin_enqueue_scripts',       'av_admin_enqueue_scripts' );
+	
+	// Only mess with post-specific stuff if enabled
+	if ( get_option( '_av_require_for' ) == 'content' ) :
+		
+		add_action( 'post_submitbox_misc_actions', 'av_add_submitbox_checkbox' );
+		
+		add_action( 'save_post',                   'av_save_post' );
+		
+	endif;
 }
 	
 /**
@@ -39,13 +48,17 @@ function av_admin_register_settings() {
 	/* General Section */
 	add_settings_section( 'av_settings_general', null, 'av_settings_callback_section_general', 'age-verify' );
  	
- 	// Minimum Age
-	add_settings_field( '_av_minimum_age', '<label for="_av_minimum_age">' . __( 'Visitors must be', 'age_verify' ) . '</label>', 'av_settings_callback_minimum_age_field', 'age-verify', 'av_settings_general' );
- 	register_setting  ( 'age-verify', '_av_minimum_age', 'intval' );
+ 	// What to protect (entire site or specific content)
+	add_settings_field( '_av_require_for', __( 'Require verification for', 'age_verify' ), 'av_settings_callback_require_for_field', 'age-verify', 'av_settings_general' );
+ 	register_setting  ( 'age-verify', '_av_require_for', 'esc_attr' );
  	
  	// Who to verify (logged in or all)
 	add_settings_field( '_av_always_verify', __( 'Verify the age of', 'age_verify' ), 'av_settings_callback_always_verify_field', 'age-verify', 'av_settings_general' );
  	register_setting  ( 'age-verify', '_av_always_verify', 'esc_attr' );
+ 	
+ 	// Minimum Age
+	add_settings_field( '_av_minimum_age', '<label for="_av_minimum_age">' . __( 'Visitors must be', 'age_verify' ) . '</label>', 'av_settings_callback_minimum_age_field', 'age-verify', 'av_settings_general' );
+ 	register_setting  ( 'age-verify', '_av_minimum_age', 'intval' );
  	
  	// Memory Length
  	add_settings_field( '_av_cookie_duration', '<label for="_av_cookie_duration">' . __( 'Remember visitors for', 'age_verify' ) . '</label>', 'av_settings_callback_cookie_duration_field', 'age-verify', 'av_settings_general' );
@@ -148,4 +161,44 @@ function av_admin_enqueue_scripts( $page ) {
 	wp_enqueue_style('wp-color-picker');
 	
 	wp_enqueue_script( 'av-admin-scripts', $age_verify->admin_url . '/admin-assets/admin-scripts.js', array( 'jquery', 'wp-color-picker' ) );
+}
+
+/**
+ * Adds the meta box for posts and pages.
+ *
+ * @since 0.2
+ */
+function av_add_submitbox_checkbox() {
+	global $post; ?>
+	
+	<div class="misc-pub-section verify-age">
+		
+		<?php wp_nonce_field( 'av_save_post', 'av_nonce' ); ?>
+		
+		<input type="checkbox" name="_av_needs_verify" id="_av_needs_verify" value="1" <?php checked( 1, get_post_meta( $post->ID, '_av_needs_verify', true ) ); ?> />
+		<label for="_av_needs_verify" class="selectit"><?php _e( 'Require age verification for this content', 'age_verify' ); ?></label>
+		
+	</div><!-- .misc-pub-section -->
+<?php }
+
+/**
+ * Saves the post|page meta
+ *
+ * @since 0.2
+ */
+function av_save_post( $post_id ) {
+	
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+		return;
+	
+	$nonce = ( isset( $_POST['av_nonce'] ) ) ? $_POST['av_nonce'] : '';
+	
+	if ( ! wp_verify_nonce( $nonce, 'av_save_post' ) )
+		return;
+		
+	$needs_verify = ( isset( $_POST['_av_needs_verify'] ) ) ? (int) $_POST['_av_needs_verify'] : 0;
+	
+	update_post_meta( $post_id, '_av_needs_verify', $needs_verify );
+	
+	return $post_id;
 }

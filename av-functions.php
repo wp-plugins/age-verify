@@ -86,6 +86,36 @@ function av_get_cookie_duration() {
 }
 
 /**
+ * Determines if only certain content should be restricted based on settings
+ *
+ * @since 0.2
+ * @return bool
+ */
+function av_only_content_restricted() {
+	
+	$only_content_restricted = ( get_option( '_av_require_for' ) == 'content' ) ? true : false;
+	
+	return (bool) apply_filters( 'av_only_content_restricted', $only_content_restricted );
+}
+
+/**
+ * Determines if a certain piece of content is restricted
+ *
+ * @since 0.2
+ * @return bool
+ */
+function av_content_is_restricted( $post_id = null ) {
+	global $post;
+	
+	if ( $post_id === null )
+		$post_id = $post->ID;
+	
+	$is_restricted = ( get_post_meta( $post_id, '_av_needs_verify', true ) == 1 ) ? true : false;
+	
+	return $is_restricted;
+}
+
+/**
  * This is the very important function that determines if a given visitor
  * needs to be verified before viewing the site. You can filter this if you like.
  *
@@ -97,7 +127,21 @@ function av_needs_verification() {
 	// Assume the visitor needs to be verified
 	$return = true;
 	
-	if ( isset( $_GET['verified'] ) && $_GET['verified'] == 'yes' )
+	// If the site is restricted on a per-content basis, let 'em through
+	if ( av_only_content_restricted() ) :
+		
+		$return = false;
+		
+		// If the content being viewed is restricted, throw up the form
+		if ( is_singular() && av_content_is_restricted() )
+			$return = true;
+		
+	endif;
+	
+	// Check that the form was at least submitted. This lets visitors through that have cookies disabled.
+	$nonce = ( isset( $_REQUEST['age-verified'] ) ) ? $_REQUEST['age-verified'] : '';
+	
+	if ( wp_verify_nonce( $nonce, 'age-verified' ) )
 		$return = false;
 	
 	// If logged in users are exempt, and the visitor is logged in, let 'em through
@@ -105,7 +149,7 @@ function av_needs_verification() {
 		$return = false;
 	
 	// Or, if there is a valid cookie let 'em through
-	if ( isset( $_COOKIE['av_old_enough'] ) )
+	if ( isset( $_COOKIE['age-verified'] ) )
 		$return = false;
 	
 	return (bool) apply_filters( 'av_needs_verification', $return );
@@ -245,10 +289,35 @@ function av_get_verify_form() {
 	
 	$form .= '<form id="av_verify_form" action="' . home_url( '/' ) . '" method="post">';
 	
-	if ( isset( $_GET['verified'] ) && $_GET['verified'] == 'no' )
-		$form .= sprintf( '<p class="error">' . apply_filters( 'av_error_text', __( 'Sorry, it doesn\'t look like you\'re old enough', 'age_verify' ) ) . '</p>', av_get_minimum_age() );
+	
+	/* Parse the errors, if any */
+	$error = ( isset( $_GET['verify-error'] ) ) ? $_GET['verify-error'] : false;
+	
+	if ( $error ) :
+		
+		// Catch-all error
+		$error_string = apply_filters( 'av_error_text_general', __( 'Sorry, something must have gone wrong. Please try again', 'age_verify' ) );
+		
+		// Visitor didn't check the box (only for the simple checkbox form)
+		if ( $error == 2 )
+			$error_string = apply_filters( 'av_error_text_not_checked', __( 'Check the box to confirm your age before continuing', 'age_verify' ) );
+		
+		// Visitor isn't old enough
+		if ( $error == 3 )
+			$error_string = apply_filters( 'av_error_text_too_young', __( 'Sorry, it doesn\'t look like you\'re old enough', 'age_verify' ) );
+		
+		// Visitor entered an invalid date
+		if ( $error == 4 )
+			$error_string = apply_filters( 'av_error_text_bad_date', __( 'Please enter a valid date', 'age_verify' ) );
+		
+		$form .= '<p class="error">' . $error_string . '</p>';
+		
+	endif;
 	
 	do_action( 'av_form_before_inputs' );
+	
+	// Add a sweet nonce. So sweet.
+	$form .= wp_nonce_field( 'verify-age', 'av-nonce' );
 	
 	switch ( $input_type ) {
 		
