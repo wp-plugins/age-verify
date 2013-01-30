@@ -1,0 +1,185 @@
+# Copyright (C) 2013 Age Verify
+# This file is distributed under the same license as the Age Verify package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Age Verify 0.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/age-verify\n"
+"POT-Creation-Date: 2013-01-29 23:49:14+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: age-verify.php:230
+msgid "You must be %1s years old to view this content."
+msgstr ""
+
+#: age-verify.php:230 av-admin/admin-settings.php:167 av-functions.php:205
+msgid "Please verify your age"
+msgstr ""
+
+#: av-admin/admin-settings.php:17
+msgid "Age Verify Settings"
+msgstr ""
+
+#: av-admin/admin-settings.php:56 av-admin/admin.php:52
+msgid "Require verification for"
+msgstr ""
+
+#: av-admin/admin-settings.php:60
+msgid "Entire site"
+msgstr ""
+
+#: av-admin/admin-settings.php:64
+msgid "Specific content"
+msgstr ""
+
+#: av-admin/admin-settings.php:79 av-admin/admin.php:56
+msgid "Verify the age of"
+msgstr ""
+
+#: av-admin/admin-settings.php:83
+msgid "Guests only"
+msgstr ""
+
+#: av-admin/admin-settings.php:83
+msgid "Logged-in users will not need to verify their age."
+msgstr ""
+
+#: av-admin/admin-settings.php:87
+msgid "All visitors"
+msgstr ""
+
+#: av-admin/admin-settings.php:100
+msgid "years old or older to view this site"
+msgstr ""
+
+#: av-admin/admin-settings.php:111
+msgid "minutes"
+msgstr ""
+
+#: av-admin/admin-settings.php:124 av-admin/admin.php:67
+msgid "Membership"
+msgstr ""
+
+#: av-admin/admin-settings.php:128
+msgid "Require users to confirm their age before registering to this site"
+msgstr ""
+
+#: av-admin/admin-settings.php:146
+msgid ""
+"These settings change the look of your overlay. You can use <code>%s</code> "
+"to display the minimum age number from the setting above."
+msgstr ""
+
+#: av-admin/admin-settings.php:156 av-functions.php:182
+msgid "You must be %s years old to visit this site."
+msgstr ""
+
+#: av-admin/admin-settings.php:179
+msgid "Date dropdowns"
+msgstr ""
+
+#: av-admin/admin-settings.php:180
+msgid "Inputs"
+msgstr ""
+
+#: av-admin/admin-settings.php:181
+msgid "Confirm checkbox"
+msgstr ""
+
+#: av-admin/admin-settings.php:195 av-admin/admin.php:86
+msgid "Styling"
+msgstr ""
+
+#: av-admin/admin-settings.php:199
+msgid "Use built-in CSS on the front-end (recommended)"
+msgstr ""
+
+#: av-admin/admin-settings.php:215 av-admin/admin.php:90
+msgid "Overlay Color"
+msgstr ""
+
+#: av-admin/admin-settings.php:236 av-admin/admin.php:94
+msgid "Background Color"
+msgstr ""
+
+#: av-admin/admin.php:60
+msgid "Visitors must be"
+msgstr ""
+
+#: av-admin/admin.php:64
+msgid "Remember visitors for"
+msgstr ""
+
+#: av-admin/admin.php:71
+msgid "Display Options"
+msgstr ""
+
+#: av-admin/admin.php:74
+msgid "Overlay Heading"
+msgstr ""
+
+#: av-admin/admin.php:78
+msgid "Overlay Description"
+msgstr ""
+
+#: av-admin/admin.php:82
+msgid "Verify ages using"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (Age Verify 0.2)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: av-admin/admin.php:127
+msgid "Age Verify"
+msgstr ""
+
+#: av-admin/admin.php:142
+msgid "Settings"
+msgstr ""
+
+#: av-admin/admin.php:179
+msgid "Require age verification for this content"
+msgstr ""
+
+#: av-functions.php:286
+msgid "Enter Site &raquo;"
+msgstr ""
+
+#: av-functions.php:299
+msgid "Sorry, something must have gone wrong. Please try again"
+msgstr ""
+
+#: av-functions.php:303
+msgid "Check the box to confirm your age before continuing"
+msgstr ""
+
+#: av-functions.php:307
+msgid "Sorry, it doesn't look like you're old enough"
+msgstr ""
+
+#: av-functions.php:311
+msgid "Please enter a valid date"
+msgstr ""
+
+#: av-functions.php:375 av-functions.php:423
+msgid "I am at least %s years old"
+msgstr ""
+
+#: av-functions.php:440
+msgid "Please confirm your age"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "A simple way to ask visitors for their age before viewing your site."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Chase Wiseman"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://chasewiseman.com"
+msgstr ""
