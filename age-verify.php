@@ -5,12 +5,12 @@
  * Description: A simple way to ask visitors for their age before viewing your site.
  * Author:      Chase Wiseman
  * Author URI:  http://chasewiseman.com
- * Version:     0.2
+ * Version:     0.2.1
  * Text Domain: age_verify
- * Domain Path: /av-languages/
+ * Domain Path: /languages/
  *
  * @package   AgeVerify
- * @version   0.2
+ * @version   0.2.1
  * @author    Chase Wiseman <contact@chasewiseman.com>
  * @copyright Copyright (c) 2012, Chase Wiseman
  * @link      http://chasewiseman.com/plugins/age-verify/
@@ -63,10 +63,10 @@ class Age_Verify {
 		$this->basename        = plugin_basename( $this->file );
 		$this->plugin_dir      = plugin_dir_path( $this->file );
 		$this->plugin_url      = plugin_dir_url ( $this->file );
-		$this->lang_dir        = trailingslashit( $this->plugin_dir . 'av-languages' );
+		$this->lang_dir        = trailingslashit( $this->plugin_dir . 'languages' );
 		
-		$this->admin_url      = $this->plugin_url . 'av-admin';
-		$this->admin_dir      = $this->plugin_dir . 'av-admin';
+		$this->admin_url      = $this->plugin_url . 'admin';
+		$this->admin_dir      = $this->plugin_dir . 'admin';
 		
 		// Min age and cookie duration
 		$this->minimum_age     = get_option( '_av_minimum_age',     '21' );
@@ -82,14 +82,14 @@ class Age_Verify {
 	private function includes() {
 		
 		// This file defines all of the common functions
-		require( $this->plugin_dir . 'av-functions.php' );
+		require( $this->plugin_dir . 'functions.php' );
 		
 		// If in the admin, this file sets up the admin functions
 		if ( is_admin() ) :
 			
 			require( $this->admin_dir . '/admin.php' );
 			
-			require( $this->admin_dir . '/admin-settings.php' );
+			require( $this->admin_dir . '/settings.php' );
 			
 		endif;
 	}
@@ -152,7 +152,7 @@ class Age_Verify {
 	 */
 	public function enqueue_styles() {
 		
-		wp_enqueue_style( 'av-styles', $this->plugin_url . '/av-assets/av-styles.css' );
+		wp_enqueue_style( 'av-styles', $this->plugin_url . '/assets/styles.css' );
 	}
 	
 	/**

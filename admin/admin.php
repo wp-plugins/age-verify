@@ -160,7 +160,7 @@ function av_admin_enqueue_scripts( $page ) {
 	
 	wp_enqueue_style('wp-color-picker');
 	
-	wp_enqueue_script( 'av-admin-scripts', $age_verify->admin_url . '/admin-assets/admin-scripts.js', array( 'jquery', 'wp-color-picker' ) );
+	wp_enqueue_script( 'av-admin-scripts', $age_verify->admin_url . '/assets/scripts.js', array( 'jquery', 'wp-color-picker' ) );
 }
 
 /**
