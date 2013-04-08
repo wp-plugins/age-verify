@@ -5,12 +5,12 @@
  * Description: A simple way to ask visitors for their age before viewing your site.
  * Author:      Chase Wiseman
  * Author URI:  http://chasewiseman.com
- * Version:     0.2.1
+ * Version:     0.2.2
  * Text Domain: age_verify
  * Domain Path: /languages/
  *
  * @package   AgeVerify
- * @version   0.2.1
+ * @version   0.2.2
  * @author    Chase Wiseman <contact@chasewiseman.com>
  * @copyright Copyright (c) 2012, Chase Wiseman
  * @link      http://chasewiseman.com/plugins/age-verify/
@@ -134,14 +134,27 @@ class Age_Verify {
 	}
 	
 	/**
-	 * Load the text domain.
+	 * Load the text domain. Big thanks to bbPress for giving a great example of implementation.
 	 *
 	 * @since 0.1
 	 * @access public
 	 */
 	public function load_textdomain() {
 		
-		load_plugin_textdomain( 'age_verify', false, $this->lang_dir );
+		$locale = get_locale();
+		$locale = apply_filters( 'plugin_locale',  $locale, 'age_verify' );
+		$mofile = sprintf( 'age_verify-%s.mo', $locale );
+
+		$mofile_local  = $this->lang_dir . $mofile;
+		$mofile_global = WP_LANG_DIR . '/age-verify/' . $mofile;
+
+		if ( file_exists( $mofile_local ) )
+			return load_textdomain( 'age_verify', $mofile_local );
+			
+		if ( file_exists( $mofile_global ) )
+			return load_textdomain( 'age_verify', $mofile_global );
+
+		return false;
 	}
 	
 	/**
