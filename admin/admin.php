@@ -176,7 +176,7 @@ function av_add_submitbox_checkbox() {
 		<?php wp_nonce_field( 'av_save_post', 'av_nonce' ); ?>
 		
 		<input type="checkbox" name="_av_needs_verify" id="_av_needs_verify" value="1" <?php checked( 1, get_post_meta( $post->ID, '_av_needs_verify', true ) ); ?> />
-		<label for="_av_needs_verify" class="selectit"><?php _e( 'Require age verification for this content', 'age_verify' ); ?></label>
+		<label for="_av_needs_verify" class="selectit"><?php esc_html_e( 'Require age verification for this content', 'age_verify' ); ?></label>
 		
 	</div><!-- .misc-pub-section -->
 <?php }

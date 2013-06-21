@@ -3,7 +3,7 @@ Contributors: ChaseWiseman
 Tags: age, restrict, verify
 Requires at least: 3.2
 Tested up to: 3.6
-Stable tag: 0.2.2
+Stable tag: 0.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,10 @@ Whatever your reasons, you may need your site's visitors to confirm their age be
 2. This is what your visitors see, using the default styling.
 
 == Changelog ==
+
+= 0.2.3 =
+* Added Remember Me checkbox to all input types
+* Escaped all strings for proper security
 
 = 0.2.2 =
 * Fixed the loading of language files
