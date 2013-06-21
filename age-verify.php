@@ -5,12 +5,12 @@
  * Description: A simple way to ask visitors for their age before viewing your site.
  * Author:      Chase Wiseman
  * Author URI:  http://chasewiseman.com
- * Version:     0.2.2
+ * Version:     0.2.3
  * Text Domain: age_verify
  * Domain Path: /languages/
  *
  * @package   AgeVerify
- * @version   0.2.2
+ * @version   0.2.3
  * @author    Chase Wiseman <contact@chasewiseman.com>
  * @copyright Copyright (c) 2012, Chase Wiseman
  * @link      http://chasewiseman.com/plugins/age-verify/
@@ -206,10 +206,10 @@ class Age_Verify {
 			
 			<div id="av-overlay">
 				
-				<h1><?php av_the_heading(); ?></h1>
+				<h1><?php esc_html_e( av_get_the_heading() ); ?></h1>
 				
 				<?php if ( av_get_the_desc() )
-					echo '<p>' . av_get_the_desc() . '</p>'; ?>
+					echo '<p>' . esc_html( av_get_the_desc() ). '</p>'; ?>
 				
 				<?php do_action( 'av_before_form' ); ?>
 				
@@ -241,8 +241,8 @@ class Age_Verify {
 		 	return $content;
 		 	
 		 return sprintf( apply_filters( 'av_restricted_content_message', __( 'You must be %1s years old to view this content.', 'age_verify' ) . ' <a href="%2s">' . __( 'Please verify your age', 'age_verify' ) . '</a>.' ),
-		 	av_get_minimum_age(),
-		 	get_permalink( $post->ID )
+		 	esc_html( av_get_minimum_age() ),
+		 	esc_url( get_permalink( $post->ID ) )
 		 );
 	 }
 	

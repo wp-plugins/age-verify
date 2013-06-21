@@ -287,7 +287,7 @@ function av_get_verify_form() {
 	
 	$form = '';
 	
-	$form .= '<form id="av_verify_form" action="' . home_url( '/' ) . '" method="post">';
+	$form .= '<form id="av_verify_form" action="' . esc_url( home_url( '/' ) ) . '" method="post">';
 	
 	
 	/* Parse the errors, if any */
@@ -310,7 +310,7 @@ function av_get_verify_form() {
 		if ( $error == 4 )
 			$error_string = apply_filters( 'av_error_text_bad_date', __( 'Please enter a valid date', 'age_verify' ) );
 		
-		$form .= '<p class="error">' . $error_string . '</p>';
+		$form .= '<p class="error">' . esc_html( $error_string ) . '</p>';
 		
 	endif;
 	
@@ -338,7 +338,7 @@ function av_get_verify_form() {
 				
 				foreach ( range( 1, 31 ) as $day ) :
 					
-					$form .= '<option value="' . $day . '">' . zeroise( $day, 2 ) . '</option>';
+					$form .= '<option value="' . $day . '">' . esc_html( zeroise( $day, 2 ) ) . '</option>';
 					
 				endforeach;
 				
@@ -354,8 +354,6 @@ function av_get_verify_form() {
 				
 			$form .= '</select></p>';
 			
-			$form .= '<p class="submit"><label for="av_verify_remember"><input type="checkbox" name="av_verify_remember" id="av_verify_remember" value="1" /> Remember me</label> ';
-			
 			break;
 		
 		// If set to date inputs
@@ -363,16 +361,14 @@ function av_get_verify_form() {
 			
 			$form .= '<p><input type="text" name="av_verify_m" id="av_verify_m" maxlength="2" value="" placeholder="MM" /> - <input type="text" name="av_verify_d" id="av_verify_d" maxlength="2" value="" placeholder="DD" /> - <input type="text" name="av_verify_y" id="av_verify_y" maxlength="4" value="" placeholder="YYYY" /></p>';
 			
-			$form .= '<p class="submit"><label for="av_verify_remember"><input type="checkbox" name="av_verify_remember" id="av_verify_remember" value="1" /> Remember me</label> ';
-			
 			break;
 			
 		// If just a simple checkbox
 		case 'checkbox' :
 			
-			$form .= '<p class="submit"><label for="av_verify_confirm"><input type="checkbox" name="av_verify_confirm" id="av_verify_confirm" value="1" /> ';
+			$form .= '<p><label for="av_verify_confirm"><input type="checkbox" name="av_verify_confirm" id="av_verify_confirm" value="1" /> ';
 			
-			$form .= sprintf( apply_filters( 'av_confirm_text', __( 'I am at least %s years old', 'age_verify' ) ), av_get_minimum_age() ) . '</label> ';
+			$form .= esc_html( sprintf( apply_filters( 'av_confirm_text', __( 'I am at least %s years old', 'age_verify' ) ), av_get_minimum_age() ) ) . '</label></p>';
 			
 			break;
 			
@@ -380,7 +376,9 @@ function av_get_verify_form() {
 	
 	do_action( 'av_form_after_inputs' );
 	
-	$form .= '<input type="submit" name="av_verify" id="av_verify" value="' . $submit_button_label . '" /></p>';
+	$form .= '<p class="submit"><label for="av_verify_remember"><input type="checkbox" name="av_verify_remember" id="av_verify_remember" value="1" /> ' . esc_html__( 'Remember me', 'age_verify' ) . '</label> ';
+	
+	$form .= '<input type="submit" name="av_verify" id="av_verify" value="' . esc_attr( $submit_button_label ) . '" /></p>';
 	
 	$form .= '</form>';
 	
@@ -420,7 +418,7 @@ function av_register_form() {
 	
 	$text = '<p class="age-verify"><label for="_av_confirm_age"><input type="checkbox" name="_av_confirm_age" id="_av_confirm_age" value="1" /> ';
 	
-	$text .= sprintf( apply_filters( 'av_registration_text', __( 'I am at least %s years old', 'age_verify' ) ), av_get_minimum_age() );
+	$text .= esc_html( sprintf( apply_filters( 'av_registration_text', __( 'I am at least %s years old', 'age_verify' ) ), av_get_minimum_age() ) );
 	
 	$text .= '</label></p><br />';
 	
