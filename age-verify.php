@@ -5,14 +5,14 @@
  * Description: A simple way to ask visitors for their age before viewing your site.
  * Author:      Chase Wiseman
  * Author URI:  http://chasewiseman.com
- * Version:     0.2.4
+ * Version:     0.2.5
  * Text Domain: age_verify
  * Domain Path: /languages/
  *
  * @package   AgeVerify
- * @version   0.2.4
+ * @version   0.2.5
  * @author    Chase Wiseman <contact@chasewiseman.com>
- * @copyright Copyright (c) 2012, Chase Wiseman
+ * @copyright Copyright (c) 2014, Chase Wiseman
  * @link      http://chasewiseman.com/plugins/age-verify/
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  *
@@ -153,7 +153,9 @@ class Age_Verify {
 			
 		if ( file_exists( $mofile_global ) )
 			return load_textdomain( 'age_verify', $mofile_global );
-
+		
+		load_plugin_textdomain( 'age_verify' );
+		
 		return false;
 	}
 	
@@ -204,6 +206,8 @@ class Age_Verify {
 		
 		<div id="av-overlay-wrap">
 			
+			<?php do_action( 'av_before_modal' ); ?>
+			
 			<div id="av-overlay">
 				
 				<h1><?php esc_html_e( av_get_the_heading() ); ?></h1>
@@ -218,6 +222,8 @@ class Age_Verify {
 				<?php do_action( 'av_after_form' ); ?>
 				
 			</div>
+			
+			<?php do_action( 'av_after_modal' ); ?>
 			
 		</div>
 	<?php }
