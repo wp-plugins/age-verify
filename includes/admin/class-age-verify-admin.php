@@ -173,11 +173,11 @@ final class Age_Verify_Admin {
 	 	
 	 	// Overlay Color
 	 	add_settings_field( '_av_overlay_color', __( 'Overlay Color', 'age_verify' ), 'av_settings_callback_overlay_color_field', 'age-verify', 'av_settings_display' );
-	 	register_setting  ( 'age-verify', '_av_overlay_color', 'av_validate_color' );
+	 	register_setting  ( 'age-verify', '_av_overlay_color', array( $this, 'validate_color' ) );
 	 	
 	 	// Background Color
 	 	add_settings_field( '_av_bgcolor', __( 'Background Color', 'age_verify' ), 'av_settings_callback_bgcolor_field', 'age-verify', 'av_settings_display' );
-	 	register_setting  ( 'age-verify', '_av_bgcolor', 'av_validate_color' );
+	 	register_setting  ( 'age-verify', '_av_bgcolor', array( $this, 'validate_color' ) );
 		
 		do_action( 'av_register_settings' );
 	}
@@ -206,12 +206,11 @@ final class Age_Verify_Admin {
 	 * Validates the color inputs from the settings.
 	 *
 	 * @since 0.2.6
-	 * @access private
 	 * 
 	 * @param  string $color A color hex.
 	 * @return string $color The validated color hex.
 	 */
-	private function validate_color( $color ) {
+	public function validate_color( $color ) {
 		
 		$color = preg_replace( '/[^0-9a-fA-F]/', '', $color );
 		
